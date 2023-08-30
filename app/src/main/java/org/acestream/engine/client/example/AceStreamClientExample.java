@@ -19,8 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class AceStreamClientExample extends AppCompatActivity implements ServiceClient.Callback {
 
-	private final static String TEST_CONTENT_ID_LIVE = "c894b23a65d64a0dae2076d2a01ec6bface83b01";
-
+	private final static String TEST_CONTENT_ID_LIVE = "8ca07071b39185431f8e940ec98d1add9e561639";
 	private ArrayList<String> mListItems = new ArrayList<>();
 	private ArrayAdapter<String> mListAdapter;
 	private ServiceClient mServiceClient;
@@ -236,7 +235,6 @@ public class AceStreamClientExample extends AppCompatActivity implements Service
 	private void openInAceStream(boolean skipResolver) {
 		Intent intent = new Intent("org.acestream.action.start_content");
 		intent.setData(Uri.parse("acestream:?content_id=" + TEST_CONTENT_ID_LIVE));
-
 		if(skipResolver) {
 			// Tell Ace Stream app to use its internal player for playback
 			// Without this option Ace Stream app can show resolver (list of players to allow user
