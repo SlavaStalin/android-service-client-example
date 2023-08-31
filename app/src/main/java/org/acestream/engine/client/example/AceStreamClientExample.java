@@ -17,7 +17,8 @@ import org.acestream.engine.service.v0.IAceStreamEngine;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class AceStreamClientExample extends AppCompatActivity implements ServiceClient.Callback {
+//implements ServiceClient.Callback
+public class AceStreamClientExample extends AppCompatActivity {
 
 	private final static String TEST_CONTENT_ID_LIVE = "8ca07071b39185431f8e940ec98d1add9e561639";
 	private ArrayList<String> mListItems = new ArrayList<>();
@@ -29,8 +30,9 @@ public class AceStreamClientExample extends AppCompatActivity implements Service
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.featured_card_design);
 
+		/*
 		mServiceClient = new ServiceClient("ClientExample", this, this);
 
 		mListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mListItems);
@@ -87,8 +89,10 @@ public class AceStreamClientExample extends AppCompatActivity implements Service
 				openInAceStream(true);
 			}
 		});
-	}
 
+		 */
+	}
+	/*
 	private void showMessage(final String text) {
 		runOnUiThread(new Runnable() {
 			@Override
@@ -214,6 +218,7 @@ public class AceStreamClientExample extends AppCompatActivity implements Service
 	 * This is deprecated way to start playback in Ace Stream app.
 	 * Use this method for versions below 3.1.43.0
 	 */
+	/*
 	private void openInAceStreamDeprecated() {
 		Intent intent = new Intent(Intent.ACTION_VIEW);
 		intent.setAction(Intent.ACTION_VIEW);
@@ -232,6 +237,7 @@ public class AceStreamClientExample extends AppCompatActivity implements Service
 	 * This is the preferred way to start playback in Ace Stream app.
 	 * This method is available for versions 3.1.43.0+
 	 */
+	/*
 	private void openInAceStream(boolean skipResolver) {
 		Intent intent = new Intent("org.acestream.action.start_content");
 		intent.setData(Uri.parse("acestream:?content_id=" + TEST_CONTENT_ID_LIVE));
@@ -250,4 +256,5 @@ public class AceStreamClientExample extends AppCompatActivity implements Service
 			showMessage("No player found");
 		}
 	}
+	*/
 }
