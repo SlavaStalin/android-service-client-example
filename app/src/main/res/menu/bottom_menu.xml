@@ -5,23 +5,27 @@
     >
 
     <item
-        android:id="@+id/home"
+        android:id="@+id/movistar_button"
         android:icon="@drawable/ic_movistar"
         android:title="Movistar"
+        android:clickable="true"
         app:cnb_iconColor="@color/home"/>
     <item
-        android:id="@+id/activity"
+        android:id="@+id/dazn_button"
         android:icon="@drawable/ic_dazn"
         android:title="DAZN"
+        android:clickable="true"
         app:cnb_iconColor="@color/like"/>
     <item
-        android:id="@+id/favorites"
-        android:icon="@drawable/ic_heart"
-        android:title="Favorites"
+        android:id="@+id/all_button"
+        android:icon="@drawable/ic_all"
+        android:title="Todos"
+        android:clickable="true"
         app:cnb_iconColor="@color/search" />
     <item
         android:id="@+id/settings"
         android:icon="@drawable/ic_settings"
-        android:title="Settings"
+        android:title="Opciones"
+        android:clickable="true"
         app:cnb_iconColor="@color/profile" />
 </menu>

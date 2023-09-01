@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.RemoteException;
+import android.os.StrictMode;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -16,9 +18,13 @@ import org.acestream.engine.controller.Callback;
 import org.acestream.engine.service.v0.IAceStreamEngine;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
 //implements ServiceClient.Callback
-public class AceStreamClientExample extends AppCompatActivity {
+public class AceStreamClientExample extends AppCompatActivity implements ServiceClient.Callback{
 
 	private final static String TEST_CONTENT_ID_LIVE = "8ca07071b39185431f8e940ec98d1add9e561639";
 	private ArrayList<String> mListItems = new ArrayList<>();
@@ -27,10 +33,25 @@ public class AceStreamClientExample extends AppCompatActivity {
 	private EngineApi mEngineApi = null;
 	private EngineSession mEngineSession = null;
 
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.featured_card_design);
+		setContentView(R.layout.rv_layout);
+		RecyclerView rv = findViewById(R.id.idRVCourse);
+		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+		StrictMode.setThreadPolicy(policy);
+
+		ArrayList<ChannelModel> canales = new ArrayList<>();
+		APIManager apiManager = new APIManager();
+		AcestreamElement[] acestreamElements = apiManager.ParseAPI();
+		//TEST
+		initializeAcestreamEngine();
+		//Filtros
+		AcestreamFilters filters = new AcestreamFilters(acestreamElements);
+		buttonListeners(filters);
+		updateRV(filters.filterLength());
+
 
 		/*
 		mServiceClient = new ServiceClient("ClientExample", this, this);
@@ -92,13 +113,56 @@ public class AceStreamClientExample extends AppCompatActivity {
 
 		 */
 	}
-	/*
+	public void initializeAcestreamEngine(){
+		try {
+			mServiceClient = new ServiceClient("ClientExample", this, this);
+			mServiceClient.startEngine();
+		}
+		catch(ServiceClient.ServiceMissingException e) {
+			showMessage("Error: engine not found");
+		}
+
+	}
+	public void updateRV(AcestreamElement[] acestreamElements){
+		RecyclerView rv = findViewById(R.id.idRVCourse);
+		ArrayList<ChannelModel> canales = new ArrayList<>();
+		for (AcestreamElement acestreamelement:
+				acestreamElements) {
+			canales.add(new ChannelModel(acestreamelement.getNombre(),acestreamelement.getEnlace()));
+		}
+		ChannelAdaptor channeladaptor = new ChannelAdaptor(this,canales);
+		LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+		rv.setLayoutManager(linearLayoutManager);
+		rv.setAdapter(channeladaptor);
+
+	}
+	public void buttonListeners(AcestreamFilters filters){
+		ChipNavigationBar barra = findViewById(R.id.barra);
+		barra.setOnItemSelectedListener(new ChipNavigationBar.OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(int i) {
+				switch(i){
+					case R.id.all_button:
+						updateRV(filters.filterLength());
+						break;
+					case R.id.movistar_button:
+						updateRV(filters.filterMovistar());
+						break;
+					case R.id.dazn_button:
+						updateRV(filters.filterDAZN());
+						break;
+
+
+				}
+
+			}
+		});
+	}
+
 	private void showMessage(final String text) {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				mListItems.add(0, text);
-				mListAdapter.notifyDataSetChanged();
 			}
 		});
 	}
@@ -218,7 +282,7 @@ public class AceStreamClientExample extends AppCompatActivity {
 	 * This is deprecated way to start playback in Ace Stream app.
 	 * Use this method for versions below 3.1.43.0
 	 */
-	/*
+
 	private void openInAceStreamDeprecated() {
 		Intent intent = new Intent(Intent.ACTION_VIEW);
 		intent.setAction(Intent.ACTION_VIEW);
@@ -237,10 +301,10 @@ public class AceStreamClientExample extends AppCompatActivity {
 	 * This is the preferred way to start playback in Ace Stream app.
 	 * This method is available for versions 3.1.43.0+
 	 */
-	/*
-	private void openInAceStream(boolean skipResolver) {
+
+	public void openInAceStream(boolean skipResolver,String enlace) {
 		Intent intent = new Intent("org.acestream.action.start_content");
-		intent.setData(Uri.parse("acestream:?content_id=" + TEST_CONTENT_ID_LIVE));
+		intent.setData(Uri.parse("acestream:?content_id=" + enlace));
 		if(skipResolver) {
 			// Tell Ace Stream app to use its internal player for playback
 			// Without this option Ace Stream app can show resolver (list of players to allow user
@@ -256,5 +320,5 @@ public class AceStreamClientExample extends AppCompatActivity {
 			showMessage("No player found");
 		}
 	}
-	*/
+
 }
