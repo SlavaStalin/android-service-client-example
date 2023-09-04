@@ -52,6 +52,7 @@ public class APIManager {
         String json = consultaAPI();
         // Parsear el JSON
         JsonParser jsonParser = new JsonParser();
+        Log.v("AAA",json);
         JsonObject jsonObject = jsonParser.parse(json).getAsJsonObject();
         JsonArray resultsArray = jsonObject.getAsJsonArray("results");
 

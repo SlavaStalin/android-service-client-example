@@ -35,7 +35,7 @@ public class AcestreamFilters {
     }
     private boolean conditionLength(AcestreamElement element){
         String nombre = element.getNombre();
-        return nombre.length() < 20;
+        return nombre.length() < 40;
     }
     public AcestreamElement[] filterLength(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
